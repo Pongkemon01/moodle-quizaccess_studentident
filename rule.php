@@ -42,63 +42,63 @@ class quizaccess_studentident extends quiz_access_rule_base {
         $mform->addElement('header', 'studentidentheader',
                 get_string('studentidentheader', 'quizaccess_studentident'));
         $mform->addElement('static', 'studentidentcaption', '',
-				$this->quiz->studentidentcaption);
+                $this->quiz->studentidentcaption);
         $mform->addElement('textarea', 'studentident', '',
-				array('rows' => 2, 'cols' => 70));
-		$mform->setType('studentident', PARAM_RAW_TRIMMED);
+                array('rows' => 2, 'cols' => 70));
+        $mform->setType('studentident', PARAM_RAW_TRIMMED);
     }
-	
-	public function compute_ident_key($data) {
-		return $key;
-	}
+
+    public function compute_ident_key($data) {
+        return sha1($data);
+    }
 
     public function validate_preflight_check($data, $files, $errors, $attemptid) {
-		global $DB;
+        global $DB;
         if (empty($data['studentident'])) {
             $errors['studentident'] = get_string('youmustpass', 'quizaccess_studentident');
-			return $error;
+            return $error;
         }
-		
-		# == Clean up phase ==
-		# split the phrase by any number of commas or space characters,
-		# which include " ", \r, \t, \n and \f
-		$identwords = preg_split("/[\s,]+/", $data['studentident']);
-		# Join the split phrase back without adding any commas
-		$ident = implode (' ', $identwords);
-		# Finally, convert all char to lower case
-		$ident = strtolower ($ident);
-		
-		# == Checking phase ==
-		# Minimum word count checking
-		if (count ($identwords) < intval ($quiz->studentidentmin)) {
-			$errors['studentident'] = get_string('youmustpass', 'quizaccess_studentident');
-			return $error;
-		}
-		$identkey = compute_ident_key ($ident);
-		# Search for existing ident in DB
-		$record = $DB->get_record('quizaccess_studentident_idents', array('ident' => $identkey));
+
+        # == Clean up phase ==
+        # split the phrase by any number of commas or space characters,
+        # which include " ", \r, \t, \n and \f
+        $identwords = preg_split("/[\s,]+/", $data['studentident']);
+        # Join the split phrase back without adding any commas
+        $ident = implode (' ', $identwords);
+        # Finally, convert all char to lower case
+        $ident = strtolower ($ident);
+
+        # == Checking phase ==
+        # Minimum word count checking
+        if (count ($identwords) < intval ($quiz->studentidentmin)) {
+            $errors['studentident'] = get_string('youmustpass', 'quizaccess_studentident');
+            return $error;
+        }
+        $identkey = compute_ident_key ($ident);
+        # Search for existing ident in DB
+        $record = $DB->get_record('quizaccess_studentident_idents', array('ident' => $identkey));
         if (!$record) {
-			# Not found. Student have passed the identity check. Store new identkey to the database.
+            # Not found. Student have passed the identity check. Store new identkey to the database.
             $record->quizid = $quiz->id;
             $record->ident = $identkey;
             $DB->insert_record('quizaccess_studentident_ident', $record);
-		} else {
-			$errors['studentident'] = get_string('youmustpass', 'quizaccess_studentident');
-		}
+        } else {
+            $errors['studentident'] = get_string('youmustpass', 'quizaccess_studentident');
+        }
 
         return $errors;
     }
-	
-	public function is_preflight_check_required($attemptid) {
-		global $SESSION;
-		return empty($SESSION->passidentcheckedquizzes[$this->quiz->id]);
-	}
 
-	public function notify_preflight_check_passed($attemptid) {
+    public function is_preflight_check_required($attemptid) {
+        global $SESSION;
+        return empty($SESSION->passidentcheckedquizzes[$this->quiz->id]);
+    }
+
+    public function notify_preflight_check_passed($attemptid) {
         global $SESSION;
         $SESSION->passidentcheckedquizzes[$this->quiz->id] = true;
     }
-    
+
     public function current_attempt_finished() {
         global $SESSION;
         # Clear the flag in the session that says that the user has already
@@ -119,23 +119,23 @@ class quizaccess_studentident extends quiz_access_rule_base {
 
     public static function add_settings_form_fields(
             mod_quiz_mod_form $quizform, MoodleQuickForm $mform) {
-		
-		$mform->addElement('checkbox', 'studentidentrequired', 
-				get_string('studentidentrequired', 'quizaccess_studentident'));
-		$mform->addElement('text', 'studentidentcaption', 
-				get_string('studentidentcaption', 'quizaccess_studentident'), '');
-		$mform->addElement('text', 'studentidentmin', 
-				get_string('studentidentmin', 'quizaccess_studentident'), 'size="3"');
 
-		$mform->setType('studentidentcaption', PARAM_RAW_TRIMMED);
-		$mform->setType('studentidentmin', PARAM_INTEGER);
-		
-		$mform->addHelpButton('studentidentrequired',
+        $mform->addElement('checkbox', 'studentidentrequired',
+                get_string('studentidentrequired', 'quizaccess_studentident'));
+        $mform->addElement('text', 'studentidentcaption',
+                get_string('studentidentcaption', 'quizaccess_studentident'), '');
+        $mform->addElement('text', 'studentidentmin',
+                get_string('studentidentmin', 'quizaccess_studentident'), 'size="3"');
+
+        $mform->setType('studentidentcaption', PARAM_RAW_TRIMMED);
+        $mform->setType('studentidentmin', PARAM_INTEGER);
+
+        $mform->addHelpButton('studentidentrequired',
                 'studentidentrequired', 'quizaccess_studentident');
-	}
+    }
 
-	# We should write the function 'public static function validate_settings_form_fields'
-	# to validate given setting
+    # We should write the function 'public static function validate_settings_form_fields'
+    # to validate given setting
 
     public static function save_settings($quiz) {
         global $DB;
@@ -147,13 +147,13 @@ class quizaccess_studentident extends quiz_access_rule_base {
                 $record = new stdClass();
                 $record->quizid = $quiz->id;
                 $record->studentidentrequired = 1;
-				$record->studentidentcaption = $quiz->studentidentcaption;
-				$record->studentidentmin = intval ($quiz->studentidentmin);
+                $record->studentidentcaption = $quiz->studentidentcaption;
+                $record->studentidentmin = intval ($quiz->studentidentmin);
                 $DB->insert_record('quizaccess_studentident', $record);
             } else {
                 $record->studentidentrequired = 1;
-				$record->studentidentcaption = $quiz->studentidentcaption;
-				$record->studentidentmin = intval ($quiz->studentidentmin);
+                $record->studentidentcaption = $quiz->studentidentcaption;
+                $record->studentidentmin = intval ($quiz->studentidentmin);
                 $DB->update_record('quizaccess_studentident', $record);
             }
         }
@@ -162,7 +162,7 @@ class quizaccess_studentident extends quiz_access_rule_base {
     public static function delete_settings($quiz) {
         global $DB;
         $DB->delete_records('quizaccess_studentident', array('quizid' => $quiz->id));
-		$DB->delete_records('quizaccess_studentident_idents', array('quizid' => $quiz->id));
+        $DB->delete_records('quizaccess_studentident_idents', array('quizid' => $quiz->id));
     }
 
     public static function get_settings_sql($quizid) {
