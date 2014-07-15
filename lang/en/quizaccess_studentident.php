@@ -1,12 +1,12 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is a part of Kasetsart Moodle Kit - https://github.com/Pongkemon01/moodle-quizaccess_studentident
 //
-// Moodle is free software: you can redistribute it and/or modify
+// Kasetsart Moodle Kit is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
+// Kasetsart Moodle Kit is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
@@ -15,13 +15,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for the quizaccess_honestycheck plugin.
+ * Restore code for the quizaccess_studentident plugin.
  *
- * @package   quizaccess_honestycheck
- * @copyright 2011 The Open University
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     quizaccess_studentident
+ * @author      Akrapong Patchararungruang
+ * @copyright   2014 Kasetsart University
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -33,3 +33,5 @@ $string['studentidentcaption'] = 'Question that asks students to provide identit
 $string['studentidentmin'] = 'Minimum word count of the identity provided by each student';
 $string['youmustpass'] = 'You are not allowed to perform the quiz because you are likely to attempt cheating.';
 $string['tooshort'] = 'Your answer is too short.';
+$string['errorcaption'] = 'Caption cannot be empty.';
+$string['errorminlength'] = 'Identity length cannot be less than 3.';

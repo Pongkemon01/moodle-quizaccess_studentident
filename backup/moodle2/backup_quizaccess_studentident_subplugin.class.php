@@ -1,12 +1,12 @@
 <?php
-// This file is part of Student Access Control Kit - https://code.google.com/p/oasychev-moodle-plugins/
+// This file is a part of Kasetsart Moodle Kit - https://github.com/Pongkemon01/moodle-quizaccess_studentident
 //
-// Student Access Control Kit is free software: you can redistribute it and/or modify
+// Kasetsart Moodle Kit is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Student Access Control Kit is distributed in the hope that it will be useful,
+// Kasetsart Moodle Kit is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
@@ -15,14 +15,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Backup code for the quizaccess_supervisedcheck plugin.
+ * Restore code for the quizaccess_studentident plugin.
  *
  * @package     quizaccess_studentident
  * @author      Akrapong Patchararungruang
  * @copyright   2014 Kasetsart University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 
 require_once($CFG->dirroot . '/mod/quiz/backup/moodle2/backup_mod_quiz_access_subplugin.class.php');
 

@@ -17,9 +17,7 @@
         <KEY NAME="quizid" TYPE="foreign-unique" FIELDS="quizid" REFTABLE="quiz" REFFIELDS="id" PREVIOUS="primary"/>
       </KEYS>
     </TABLE>
-  </TABLES>
 
-  <TABLES>
     <TABLE NAME="quizaccess_studentident_idents" COMMENT="Stores identity keys for each submission">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="quizid"/>

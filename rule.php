@@ -1,12 +1,12 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is a part of Kasetsart Moodle Kit - https://github.com/Pongkemon01/moodle-quizaccess_studentident
 //
-// Moodle is free software: you can redistribute it and/or modify
+// Kasetsart Moodle Kit is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
+// Kasetsart Moodle Kit is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
@@ -15,13 +15,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Implementaton of the quizaccess_honestycheck plugin.
+ * Restore code for the quizaccess_studentident plugin.
  *
- * @package   quizaccess_studentident
- * @copyright 2014 Kasetsart University
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     quizaccess_studentident
+ * @author      Akrapong Patchararungruang
+ * @copyright   2014 Kasetsart University
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -55,33 +55,36 @@ class quizaccess_studentident extends quiz_access_rule_base {
     public function validate_preflight_check($data, $files, $errors, $attemptid) {
         global $DB;
         if (empty($data['studentident'])) {
-            $errors['studentident'] = get_string('youmustpass', 'quizaccess_studentident');
-            return $error;
+            $errors['studentident'] = get_string('tooshort', 'quizaccess_studentident');
+            return $errors;
         }
 
-        # == Clean up phase ==
-        # split the phrase by any number of commas or space characters,
-        # which include " ", \r, \t, \n and \f
+        // == Clean up phase ==
+        // split the phrase by any number of commas or space characters,
+        // which include " ", \r, \t, \n and \f
         $identwords = preg_split("/[\s,]+/", $data['studentident']);
-        # Join the split phrase back without adding any commas
+        // Join the split phrase back without adding any commas
         $ident = implode (' ', $identwords);
-        # Finally, convert all char to lower case
+        // Finally, convert all char to lower case
         $ident = strtolower ($ident);
 
-        # == Checking phase ==
-        # Minimum word count checking
-        if (count ($identwords) < intval ($quiz->studentidentmin)) {
-            $errors['studentident'] = get_string('youmustpass', 'quizaccess_studentident');
-            return $error;
+        // == Checking phase ==
+        // Minimum word count checking
+        if (count ($identwords) < intval ($this->quiz->studentidentmin)) {
+            $errors['studentident'] = get_string('tooshort', 'quizaccess_studentident');
+            return $errors;
         }
-        $identkey = compute_ident_key ($ident);
-        # Search for existing ident in DB
-        $record = $DB->get_record('quizaccess_studentident_idents', array('ident' => $identkey));
+        $identkey = $this->compute_ident_key ($ident);
+        // Search for existing ident in DB
+        $record = $DB->get_record_select('quizaccess_studentident_idents',
+                $DB->sql_compare_text('ident', 255) . "= '" . $identkey . "'");
+
         if (!$record) {
-            # Not found. Student have passed the identity check. Store new identkey to the database.
-            $record->quizid = $quiz->id;
+            // Not found. Student have passed the identity check. Store new identkey to the database.
+            $record = new stdClass();
+            $record->quizid = $this->quiz->id;
             $record->ident = $identkey;
-            $DB->insert_record('quizaccess_studentident_ident', $record);
+            $DB->insert_record('quizaccess_studentident_idents', $record);
         } else {
             $errors['studentident'] = get_string('youmustpass', 'quizaccess_studentident');
         }
@@ -101,8 +104,8 @@ class quizaccess_studentident extends quiz_access_rule_base {
 
     public function current_attempt_finished() {
         global $SESSION;
-        # Clear the flag in the session that says that the user has already
-        # entered the password for this quiz.
+        // Clear the flag in the session that says that the user has already
+        // entered the password for this quiz.
         if (!empty($SESSION->passidentcheckedquizzes[$this->quiz->id])) {
             unset($SESSION->passidentcheckedquizzes[$this->quiz->id]);
         }
@@ -134,8 +137,30 @@ class quizaccess_studentident extends quiz_access_rule_base {
                 'studentidentrequired', 'quizaccess_studentident');
     }
 
-    # We should write the function 'public static function validate_settings_form_fields'
-    # to validate given setting
+    public static function validate_settings_form_fields(array $errors,
+            array $data, $files, mod_quiz_mod_form $quizform) {
+
+        // If identity is not required, we skip all checking
+        if (empty($data['studentidentrequired'])) {
+            return $errors;
+        }
+
+        // Caption cannot be empty
+        if (empty($data['studentidentcaption'])) {
+            $errors['studentidentcaption'] = get_string('errorcaption', 'quizaccess_studentident');
+        }
+
+        // Minimum length of identity must be at least 2
+        if (empty($data['studentidentmin'])) {
+            $errors['studentidentmin'] = get_string('errorminlength', 'quizaccess_studentident');
+        } else {
+            if (intval ($data['studentidentmin']) < 3) {
+                $errors['studentidentmin'] = get_string('errorminlength', 'quizaccess_studentident');
+            }
+        }
+
+        return $errors;
+    }
 
     public static function save_settings($quiz) {
         global $DB;
