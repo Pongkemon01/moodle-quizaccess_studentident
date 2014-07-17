@@ -79,7 +79,7 @@ class quizaccess_studentident extends quiz_access_rule_base {
         $identkey = $this->compute_ident_key ($ident);
         $attempt = $DB->get_record('quiz_attempts', array('id' => $attemptid)); // We need 'userid'
         // Search for existing ident in DB
-        $record = $DB->get_record_select('quizaccess_studentident_idents',
+        $record = $DB->get_record_select('quizaccess_studentident_ids',
                 $DB->sql_compare_text('ident', 255) . "= '" . $identkey . "'");
 
         if (!$record) {
@@ -88,7 +88,7 @@ class quizaccess_studentident extends quiz_access_rule_base {
             $record->quizid = $this->quiz->id;
             $record->userid = $attempt->userid;
             $record->ident = $identkey;
-            $DB->insert_record('quizaccess_studentident_idents', $record);
+            $DB->insert_record('quizaccess_studentident_ids', $record);
         } else {
             $errors['studentident'] = get_string('youmustpass', 'quizaccess_studentident');
         }
@@ -191,7 +191,7 @@ class quizaccess_studentident extends quiz_access_rule_base {
     public static function delete_settings($quiz) {
         global $DB;
         $DB->delete_records('quizaccess_studentident', array('quizid' => $quiz->id));
-        $DB->delete_records('quizaccess_studentident_idents', array('quizid' => $quiz->id));
+        $DB->delete_records('quizaccess_studentident_ids', array('quizid' => $quiz->id));
     }
 
     public static function get_settings_sql($quizid) {

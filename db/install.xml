@@ -18,7 +18,7 @@
       </KEYS>
     </TABLE>
 
-    <TABLE NAME="quizaccess_studentident_idents" COMMENT="Stores identity keys for each submission">
+    <TABLE NAME="quizaccess_studentident_ids" COMMENT="Stores identity keys for each submission">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="quizid"/>
         <FIELD NAME="quizid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" COMMENT="Foreign key to quiz.id." PREVIOUS="id" NEXT="userid"/>
