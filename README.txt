@@ -1,6 +1,6 @@
 The student-identity check quiz access rule
 
-This quiz access rule was created by Akrapong Patchararungruang of Kasetsart University. 
+This quiz access rule was created by Akrapong Patchararungruang of Kasetsart University.
 It can be used with versions 2.2 of Moodle, or later.
 
 If you install this plugin, there are new options on the quiz settings form. The first
@@ -10,7 +10,7 @@ The last is the minimum word count of a student answer.
 
 If the teacher turns identity-check on, then when a student tries to start a quiz attempt,
 they will see the instruction and an empty text input, and they will have to
-type something with the total words at least the previously set minimum before they are 
+type something with the total words at least the previously set minimum before they are
 allowed to start the quiz attempt.
 
 To install using git, type this command in the root of your Moodle install

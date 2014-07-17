@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 
-$plugin->version   = 2014071500;
+$plugin->version   = 2014071700;
 $plugin->requires  = 2011120500;
 $plugin->cron      = 0;
 $plugin->component = 'quizaccess_studentident';

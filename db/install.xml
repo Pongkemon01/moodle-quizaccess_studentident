@@ -21,12 +21,14 @@
     <TABLE NAME="quizaccess_studentident_idents" COMMENT="Stores identity keys for each submission">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="quizid"/>
-        <FIELD NAME="quizid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" COMMENT="Foreign key to quiz.id." PREVIOUS="id" NEXT="ident"/>
-        <FIELD NAME="ident" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="An identity key in string format." PREVIOUS="quizid"/>
+        <FIELD NAME="quizid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" COMMENT="Foreign key to quiz.id." PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" COMMENT="Foreign key to user.id." PREVIOUS="quizid" NEXT="ident"/>
+        <FIELD NAME="ident" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="An identity key in string format." PREVIOUS="userid"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="quizid"/>
-        <KEY NAME="quizid" TYPE="foreign-unique" FIELDS="quizid" REFTABLE="quiz" REFFIELDS="id" PREVIOUS="primary"/>
+        <KEY NAME="quizid" TYPE="foreign-unique" FIELDS="quizid" REFTABLE="quiz" REFFIELDS="id" PREVIOUS="primary" NEXT="userid"/>
+        <KEY NAME="userid" TYPE="foreign-unique" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="quizid"/>
       </KEYS>
     </TABLE>
   </TABLES>
