@@ -53,7 +53,7 @@ class quizaccess_studentident extends quiz_access_rule_base {
     }
 
     public function validate_preflight_check($data, $files, $errors, $attemptid) {
-        global $DB;
+        global $DB, $USER;
         if (empty($data['studentident'])) {
             $errors['studentident'] = get_string('tooshort', 'quizaccess_studentident');
             return $errors;
@@ -75,9 +75,7 @@ class quizaccess_studentident extends quiz_access_rule_base {
             return $errors;
         }
 
-        $attempt = new stdClass();
         $identkey = $this->compute_ident_key ($ident);
-        $attempt = $DB->get_record('quiz_attempts', array('id' => $attemptid)); // We need 'userid'
         // Search for existing ident in DB
         $record = $DB->get_record_select('quizaccess_studentident_ids',
                 $DB->sql_compare_text('ident', 255) . "= '" . $identkey . "'");
@@ -86,7 +84,7 @@ class quizaccess_studentident extends quiz_access_rule_base {
             // Not found. Student have passed the identity check. Store new identkey to the database.
             $record = new stdClass();
             $record->quizid = $this->quiz->id;
-            $record->userid = $attempt->userid;
+            $record->userid = $USER->userid;
             $record->ident = $identkey;
             $DB->insert_record('quizaccess_studentident_ids', $record);
         } else {
