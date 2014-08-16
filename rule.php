@@ -84,7 +84,7 @@ class quizaccess_studentident extends quiz_access_rule_base {
             // Not found. Student have passed the identity check. Store new identkey to the database.
             $record = new stdClass();
             $record->quizid = $this->quiz->id;
-            $record->userid = $USER->userid;
+            $record->userid = $USER->id;
             $record->ident = $identkey;
             $DB->insert_record('quizaccess_studentident_ids', $record);
         } else {

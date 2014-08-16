@@ -40,8 +40,8 @@ class backup_quizaccess_studentident_subplugin extends backup_mod_quiz_access_su
         $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
         $subplugintablesettings = new backup_nested_element('quizaccess_studentident',
             null, array('quizid', 'studentidentrequired', 'studentidentcaption', 'studentidentmin'));
-        $subplugintabledata = new backup_nested_element('quizaccess_studentident_idents',
-            null, array('quizid', 'ident'));
+        $subplugintabledata = new backup_nested_element('quizaccess_studentident_ids',
+            null, array('quizid', 'userid', 'ident'));
 
         // Connect XML elements into the tree.
         $subplugin->add_child($subpluginwrapper);
@@ -51,7 +51,7 @@ class backup_quizaccess_studentident_subplugin extends backup_mod_quiz_access_su
         // Set source to populate the data.
         $subplugintablesettings->set_source_table('quizaccess_studentident',
             array('quizid' => backup::VAR_ACTIVITYID));
-        $subplugintabledata->set_source_table('quizaccess_studentident_idents',
+        $subplugintabledata->set_source_table('quizaccess_studentident_ids',
             array('quizid' => backup::VAR_ACTIVITYID));
 
         return $subplugin;

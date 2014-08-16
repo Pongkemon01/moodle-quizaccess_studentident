@@ -41,7 +41,7 @@ class restore_quizaccess_supervisedcheck_subplugin extends restore_mod_quiz_acce
         $elename = $this->get_namefor('');
         $elepath = $this->get_pathfor('/quizaccess_studentident');
         $paths[] = new restore_path_element($elename, $elepath);
-        $elepath = $this->get_pathfor('/quizaccess_studentident_idents');
+        $elepath = $this->get_pathfor('/quizaccess_studentident_ids');
         $paths[] = new restore_path_element($elename, $elepath);
 
         return $paths;
@@ -63,11 +63,11 @@ class restore_quizaccess_supervisedcheck_subplugin extends restore_mod_quiz_acce
      * Processes the quizaccess_studentident_idents element, if it is in the file.
      * @param array $data the data read from the XML file.
      */
-    public function process_quizaccess_studentident_idents($data) {
+    public function process_quizaccess_studentident_ids($data) {
         global $DB;
 
         $data = (object)$data;
         $data->quizid = $this->get_new_parentid('quiz');
-        $DB->insert_record('quizaccess_studentident_idents', $data);
+        $DB->insert_record('quizaccess_studentident_ids', $data);
     }
 }
