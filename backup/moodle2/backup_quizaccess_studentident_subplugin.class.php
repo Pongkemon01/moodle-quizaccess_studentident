@@ -41,7 +41,7 @@ class backup_quizaccess_studentident_subplugin extends backup_mod_quiz_access_su
         $subplugintablesettings = new backup_nested_element('quizaccess_studentident',
             null, array('quizid', 'studentidentrequired', 'studentidentcaption', 'studentidentmin'));
         $subplugintabledata = new backup_nested_element('quizaccess_studentident_ids',
-            null, array('quizid', 'userid', 'ident'));
+            null, array('quizid', 'userid', 'ident', 'answer'));
 
         // Connect XML elements into the tree.
         $subplugin->add_child($subpluginwrapper);

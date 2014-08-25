@@ -37,17 +37,18 @@ function xmldb_quizaccess_safeexambrowser_upgrade($oldversion) {
     // Valid for version 2014081701 or less (new DB is valid from 2014082501)
     if ($oldversion < 2014082501) {
 
-        // Add "answer" field to table quizaccess_studentident_ids to save the normalized answer.
+        // Define field answer to be added to quizaccess_studentident_ids.
         $table = new xmldb_table('quizaccess_studentident_ids');
-        $field = new xmldb_field('answer', XMLDB_TYPE_TEXT);
+        $field = new xmldb_field('answer', XMLDB_TYPE_TEXT, null, null, null, null, null, 'ident');
 
-        // Launch add field.
-        $dbman->add_field($table, $field);
+        // Conditionally launch add field answer.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
 
-        // studentident savepoint reached.
+        // Studentident savepoint reached.
         upgrade_plugin_savepoint(true, 2014082501, 'quizaccess', 'studentident');
     }
 
     return true;
 }
-
