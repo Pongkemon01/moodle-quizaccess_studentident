@@ -35,3 +35,4 @@ $string['youmustpass'] = 'You are not allowed to perform the quiz because you ar
 $string['tooshort'] = 'Your answer is too short.';
 $string['errorcaption'] = 'Caption cannot be empty.';
 $string['errorminlength'] = 'Identity length cannot be less than 3.';
+$string['hint'] = '<small><b>Be careful.</b> If you log out, you will have to answer this question again before you can continue the quiz. The 30-minute time limit of the quiz will start <b>after</b> you complete this question.</small>';

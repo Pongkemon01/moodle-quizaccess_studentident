@@ -25,10 +25,29 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * quizaccess_studentident_ids module upgrade function.
+ * @param string $oldversion the version we are upgrading from.
+ */
+function xmldb_quizaccess_safeexambrowser_upgrade($oldversion) {
+    global $CFG, $DB;
 
-$plugin->version   = 2014082501;
-$plugin->requires  = 2011120500;
-$plugin->cron      = 0;
-$plugin->component = 'quizaccess_studentident';
-$plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = 'v1.2 for Moodle 2.2+';
+    $dbman = $DB->get_manager();
+
+    // Valid for version 2014081701 or less (new DB is valid from 2014082501)
+    if ($oldversion < 2014082501) {
+
+        // Add "answer" field to table quizaccess_studentident_ids to save the normalized answer.
+        $table = new xmldb_table('quizaccess_studentident_ids');
+        $field = new xmldb_field('answer', XMLDB_TYPE_TEXT);
+
+        // Launch add field.
+        $dbman->add_field($table, $field);
+
+        // studentident savepoint reached.
+        upgrade_plugin_savepoint(true, 2014082501, 'quizaccess', 'studentident');
+    }
+
+    return true;
+}
+

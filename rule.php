@@ -45,6 +45,8 @@ class quizaccess_studentident extends quiz_access_rule_base {
                 $this->quiz->studentidentcaption);
         $mform->addElement('textarea', 'studentident', '',
                 array('rows' => 2, 'cols' => 70));
+        $mform->addElement('static', 'formhint', '',
+                get_string('hint', 'quizaccess_studentident'));
         $mform->setType('studentident', PARAM_RAW_TRIMMED);
     }
 
@@ -86,7 +88,10 @@ class quizaccess_studentident extends quiz_access_rule_base {
             $record->quizid = $this->quiz->id;
             $record->userid = $USER->id;
             $record->ident = $identkey;
+            $record->answer = $ident;
             $DB->insert_record('quizaccess_studentident_ids', $record);
+        } else if (($record->userid == $USER->id) && ($record->quizid == $this->quiz->id)) {
+            // same student, same quiz, same text...
         } else {
             $errors['studentident'] = get_string('youmustpass', 'quizaccess_studentident');
         }
