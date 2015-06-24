@@ -32,7 +32,7 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Provides the information to restore the supervisedcheck quiz access plugin.
  */
-class restore_quizaccess_supervisedcheck_subplugin extends restore_mod_quiz_access_subplugin {
+class restore_quizaccess_studentident_subplugin extends restore_mod_quiz_access_subplugin {
 
     protected function define_quiz_subplugin_structure() {
 

@@ -26,9 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 
-$plugin->version   = 2014082502;
+$plugin->version   = 2015061501;
 $plugin->requires  = 2011120500;
 $plugin->cron      = 0;
 $plugin->component = 'quizaccess_studentident';
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = 'v1.2 for Moodle 2.2+';
+$plugin->release   = 'v1.3 for Moodle 2.2+';
